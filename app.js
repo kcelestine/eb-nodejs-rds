@@ -7,7 +7,7 @@ const express = require('express')
   , hike = require('./routes/hike')
   , http = require('http')
   , path = require('path')
-  , mysql = require('mysql')
+  , mysql = require('mysql2')
   , async = require('async')
   , bodyParser = require('body-parser')
   , methodOverride = require('method-override')
@@ -38,10 +38,15 @@ if (process.env.NODE_ENV === 'production') {
   console.log('Attempting to create connection to development database');
   // TODO: Place local mysql connection information here. You need to have mysql running locally on your machine for this example to work
   app.set('connection', mysql.createConnection({
-    host: '127.0.0.1',
-    user: '',
-    port: 3306,
-    password: ''}));
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    port: process.env.MYSQL_PORT,
+    password: process.env.MYSQL_PASSWORD}));
+
+    // host: 'mysql',
+    // user: 'root',
+    // port: 3306,
+    // password: 'password'}));
 }
 
 function init() {
@@ -90,6 +95,9 @@ async.series([
     const hike = {HIKE_DATE: new Date(), NAME: 'Hazard Stevens',
           LOCATION: 'Mt Rainier', DISTANCE: '4,027m vertical', WEATHER:'Bad', ID: '12345'};
     client.query('INSERT INTO HIKES set ?', hike, callback);
+    const hike2 = {HIKE_DATE: new Date(), NAME: 'Khadijah',
+      LOCATION: 'Brooklyn', DISTANCE: '500m', WEATHER:'Sexy', ID: '12346'};
+    client.query('INSERT INTO HIKES set ?', hike2, callback);
   }
 ], function (err, results) {
   if (err) {
