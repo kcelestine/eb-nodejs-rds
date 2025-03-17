@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  app:
+    build: .
+    environment:
+      MYSQL_HOST: mysql  # This should match the service name
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_PORT: 3306
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+
+networks:
+  app-network:
+    driver: bridge
