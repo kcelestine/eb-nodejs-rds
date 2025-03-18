@@ -11,5 +11,5 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app /usr/src/app
 EXPOSE 3000
 
-# Run the wait-for-it command to wait for MySQL before starting the Node.js app
+# Run the Node.js app
 CMD ["npm", "start"]

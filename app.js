@@ -55,9 +55,13 @@ function init() {
   app.get('/hikes', hike.index);
   app.post('/add_hike', hike.add_hike);
 
-  http.createServer(app).listen(app.get('port'), function(){
+  // http.createServer(app).listen(app.get('port'), function(){
+  //   console.log("Express server listening on port " + app.get('port'));
+  // });
+
+  http.createServer(app).listen(app.get('port'), '0.0.0.0', function(){
     console.log("Express server listening on port " + app.get('port'));
-  });
+});
 
   if (process.env.NODE_ENV === 'development') {
     // only use in development environment
@@ -95,9 +99,6 @@ async.series([
     const hike = {HIKE_DATE: new Date(), NAME: 'Hazard Stevens',
           LOCATION: 'Mt Rainier', DISTANCE: '4,027m vertical', WEATHER:'Bad', ID: '12345'};
     client.query('INSERT INTO HIKES set ?', hike, callback);
-    const hike2 = {HIKE_DATE: new Date(), NAME: 'Khadijah',
-      LOCATION: 'Brooklyn', DISTANCE: '500m', WEATHER:'Sexy', ID: '12346'};
-    client.query('INSERT INTO HIKES set ?', hike2, callback);
   }
 ], function (err, results) {
   if (err) {
@@ -108,3 +109,107 @@ async.series([
     init();
   }
 });
+
+// const client = app.get('connection');
+
+// async.series([
+//   function connect(callback) {
+//     client.connect(function(err) {
+//       if (err) {
+//         console.log('Error connecting to MySQL:', err);
+//         callback(err);  // Calling callback with error if connection fails
+//       } else {
+//         console.log('Connected!');
+//         callback(); // Calling callback without error on successful connection
+//       }
+//     });
+//   },
+//   function clear(callback) {
+//     client.query('DROP DATABASE IF EXISTS mynode_db', function(err) {
+//       if (err) {
+//         console.log('Error clearing database:', err);
+//         callback(err);
+//       } else {
+//         callback();  // No error, continue
+//       }
+//     });
+//   },
+//   function create_db(callback) {
+//     client.query('CREATE DATABASE mynode_db', function(err) {
+//       if (err) {
+//         console.log('Error creating database:', err);
+//         callback(err);
+//       } else {
+//         callback();  // No error, continue
+//       }
+//     });
+//   },
+//   function use_db(callback) {
+//     client.query('USE mynode_db', function(err) {
+//       if (err) {
+//         console.log('Error using database:', err);
+//         callback(err);
+//       } else {
+//         callback();  // No error, continue
+//       }
+//     });
+//   },
+//   function create_table(callback) {
+//     client.query('CREATE TABLE HIKES (' +
+//                  'ID VARCHAR(40), ' +
+//                  'HIKE_DATE DATE, ' +
+//                  'NAME VARCHAR(40), ' +
+//                  'DISTANCE VARCHAR(40), ' +
+//                  'LOCATION VARCHAR(40), ' +
+//                  'WEATHER VARCHAR(40), ' +
+//                  'PRIMARY KEY(ID))', function(err) {
+//       if (err) {
+//         console.log('Error creating table:', err);
+//         callback(err);
+//       } else {
+//         callback();  // No error, continue
+//       }
+//     });
+//   },
+//   function insert_default(callback) {
+//     const hike = {
+//       HIKE_DATE: new Date(),
+//       NAME: 'Hazard Stevens',
+//       LOCATION: 'Mt Rainier',
+//       DISTANCE: '4,027m vertical',
+//       WEATHER: 'Bad',
+//       ID: '12345'
+//     };
+//     client.query('INSERT INTO HIKES set ?', hike, function(err) {
+//       if (err) {
+//         console.log('Error inserting default hike:', err);
+//         callback(err);
+//       } else {
+//         const hike2 = {
+//           HIKE_DATE: new Date(),
+//           NAME: 'Khadijah',
+//           LOCATION: 'Brooklyn',
+//           DISTANCE: '500m',
+//           WEATHER: 'Sexy',
+//           ID: '12346'
+//         };
+//         client.query('INSERT INTO HIKES set ?', hike2, function(err) {
+//           if (err) {
+//             console.log('Error inserting second hike:', err);
+//             callback(err);
+//           } else {
+//             callback();  // No error, continue
+//           }
+//         });
+//       }
+//     });
+//   }
+// ], function (err, results) {
+//   if (err) {
+//     console.log('Exception initializing database.');
+//     throw err;
+//   } else {
+//     console.log('Database initialization complete.');
+//     init();  // Proceed to start the server
+//   }
+// });
