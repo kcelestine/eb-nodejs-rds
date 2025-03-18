@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: mysql-deploy
+    app: hike-app
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mysql-pod
+      app: hike-app
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        name: mysql-pod
+        app: hike-app
+    spec:
+      containers:
+      - image: mysql:latest
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "rootpassword" # Set a strong root password here
+        - name: MYSQL_DATABASE
+          value: "my_database"
+        ports:
+        - containerPort: 3306
