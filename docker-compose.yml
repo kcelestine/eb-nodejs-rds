@@ -12,7 +12,7 @@ services:
   app:
     build: .
     environment:
-      MYSQL_HOST: mysql  # This should match the service name
+      MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_PORT: 3306
