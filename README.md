@@ -11,8 +11,10 @@ Run using docker containers:
 Run using minikube:
   1. Ensure you have created a cluster with minikube
   2. Create the kubernetes objects:
-  ```k create -f mysql-deploy.yaml
+  ```
+  k create -f mysql-deploy.yaml
   k create -f mysql-service.yaml
-  k create -f hike-app.yaml```
+  k create -f hike-app.yaml
+  ```
 
 
