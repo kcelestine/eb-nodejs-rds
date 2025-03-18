@@ -16,5 +16,39 @@ Run using minikube:
   k create -f mysql-service.yaml
   k create -f hike-app.yaml
   ```
+  3. Create the minikube tunnel and visit the website: `minikube service hike-app-service`
 
+Troubleshooting while inside the nodejs container:
+```
+  POD=
+  k exec -it $POD -- /bin/bash
+  apt-get update
+  apt-get install curl -y
+  curl localhost:3000
+  curl localhost:3000/hikes
+```
 
+Troubleshooting while inside the mysql container:
+```
+  POD=
+  k exec -it $POD -- /bin/bash
+  PODIP=10.244.0.18
+  curl http://$PODIP:3000
+  curl http://$PODIP:3000/hikes
+```
+
+Developing the kube objects
+```
+HASH=2ebe0fe # I use the git log hash but you can use any version numbering scheme
+echo $HASH
+sudo docker build -t hike-app:$HASH -f Dockerfile-kube .
+docker tag hike-app:$HASH khadijahthegreat/hike-app:$HASH
+docker push khadijahthegreat/hike-app:$HASH
+k delete deployment.apps/hike-app-deployment services/hike-app-service
+k create -f hike-app.yaml 
+k get all
+k logs pod/hike-app-deployment-7d4c685969-4v942
+minikube ip
+k get nodes -o wide
+minikube service hike-app-service
+```
