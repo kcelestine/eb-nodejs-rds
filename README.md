@@ -52,3 +52,12 @@ minikube ip
 k get nodes -o wide
 minikube service hike-app-service
 ```
+
+Run using minikube cluster for nodejs app and terraform for rds
+1. `cd terraform`
+2. `terraform init`
+3. `terraform apply --auto-approve`
+4. `cd ../kube-prod`
+5. update the rds endpoint in hike-app.yaml
+5. `kubectl create -f hike-app.yaml`
+7. `minikube service hike-app-service`
