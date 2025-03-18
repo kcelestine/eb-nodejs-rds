@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: hike-app
-          image: khadijahthegreat/hike-app:1.4 
+          image: khadijahthegreat/hike-app:2ebe0fe 
           ports:
             - containerPort: 3000
           env:
